@@ -48,3 +48,12 @@ export default tseslint.config({
   },
 })
 ```
+
+
+HOMEPAGE BACKGROUND
+
+The gifs are too big for github.
+If you would like me to send you the backgrounds for testing, please send me an email to: contact@sol-insights.com
+Then drag these gifs into the src/assets/img folder
+
+You can also visit official website for see the result: https://sol-insights.com
