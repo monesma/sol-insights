@@ -1,0 +1,40 @@
+{
+  "name": "solana-fees-tracker",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@solana/web3.js": "^1.95.3",
+    "@types/sentiment": "^5.0.4",
+    "axios": "^1.7.7",
+    "chart.js": "^4.4.4",
+    "framer-motion": "^11.11.1",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-d3-cloud": "^1.0.6",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "react-wordcloud": "^1.2.7",
+    "sentiment": "^5.0.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.0.1",
+    "vite": "^5.4.1"
+  }
+}

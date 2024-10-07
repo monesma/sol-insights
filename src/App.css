@@ -1,0 +1,546 @@
+* {
+  box-sizing: border-box;
+}
+#root {
+  margin: 0 auto;
+  font-family: "Roboto", system-ui;
+  font-weight: 500;
+  font-size: 18px;
+  
+}
+
+p {
+  line-height: 1.65;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+img, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+h1, h2, h3, h4, a {
+  font-family: "Ubuntu", sans-serif;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+h2 {
+  font-size: 24px;
+}
+h3 {
+  font-size: 22px;
+}
+
+/* Loader.css */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+}
+
+.loader {
+  border: 8px solid rgba(75,192,192,1);
+  border-top: 8px solid rgba(153,102,255,1);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.loader p {
+  margin-top: 10px;
+  color: #fff;
+  font-size: 1.2em;
+}
+
+/* Header Styles */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5% 5px;
+  position: relative;
+}
+
+header img {
+  width: 150px;
+  height: auto;
+}
+
+header nav {
+  display: none;
+  gap: 20px;
+}
+
+/* if burger menu is open */
+.nav-open {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  background-color: #161b19;
+  text-align: center;
+  padding: 10px 0;
+  z-index: 1000;
+}
+header.menu-open {
+  background-color: #161b19;
+  z-index: 999;
+}
+
+/* Burger button styles */
+.burger-btn {
+  display: block;
+  font-size: 50px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  padding: 0;
+  margin-top: -10px;
+  z-index: 1001;
+}
+
+header nav a{
+  color: white;
+  font-size: 18px;
+  font-family: "Ubuntu", sans-serif;
+  text-transform: uppercase;
+  margin: 20px 0;
+  transition: all .2s ease;
+}
+
+header nav a:hover {
+  color: rgba(75,192,192,1);
+}
+
+.absolute-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+
+/* MAIN */
+main {
+  margin: 0 auto;
+}
+
+main section {
+  background-color: #1e2423;
+  margin-bottom: 50px;
+  padding: 50px 5%;
+}
+
+main>section:first-of-type {
+  background-color: transparent;
+}
+
+/* HOME */
+.presentation {
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./assets/img/background.gif");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 0 5%;
+  min-height: 100vh;
+}
+
+.presentation h1 {
+  padding-top: 45vh;
+  text-align: left;
+  text-shadow:
+       1.5px 1.5px 0 #000,
+     -0.5px -0.5px 0 #000,  
+      0.5px -0.5px 0 #000,
+      -0.5px 0.5px 0 #000,
+      0.5px 0.5px 0 #000;
+}
+.about {
+  background: url("./assets/img/planete.gif");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0;
+}
+.about p:last-of-type {
+  margin-bottom: 0;
+}
+.about .iframe-container {
+  margin-top: 50px;
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;  /* ratio 16:9 */
+  overflow: hidden;
+}
+
+.about .iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.analysis {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/img/space.gif");
+  background-size: cover;
+  background-position: center top;
+  margin-bottom: 0;
+}
+.analysis article{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 15% 0;
+}
+
+.analysis article:last-of-type {
+  padding-top: 0;
+  padding-bottom: 5px;
+}
+
+.analysis article img {
+  width: 30%;
+}
+
+.analysis article:last-of-type img {
+  width: 26%;
+}
+
+.analysis article div {
+  width: 65%;
+}
+.analysis article div h3{
+  font-size: 20px;
+}
+.analysis article div a {
+  display: block;
+  background-color: rgba(153,102,255,1);
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.analysis>p {
+  text-align: center;
+  margin: 10% auto 0;
+}
+
+.join {
+  margin-bottom: 0;
+  background-color: #161b19;
+}
+.join div {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  
+}
+.join div a {
+  color: white;
+  text-transform: lowercase;
+  font-size: 20px;
+}
+
+.join div img {
+  width: 25%;
+}
+.join form {
+  width: 70%;
+}
+
+.join form label {
+  display: block;
+  margin-bottom: 5px;
+}
+.join form input, .join form textarea{
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  border: 0.5px solid white;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  border-radius: 0;
+}
+.join form input::placeholder, .join form textarea::placeholder {
+  color: white;
+}
+.join form textarea {
+  min-height: 150px;
+}
+.join form input[type=submit] {
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: rgba(153,102,255,1);
+  color: white;
+  border-radius: 5px;
+  border: none;
+}
+
+
+/* OTHER PAGES */
+.otherPage h1{
+  margin-bottom: 50px;
+}
+.network form, .transferPage .container form, .network>p:first-of-type{
+  padding:0 5%;
+}
+.network form select {
+  font-size: 18px;
+  background-color: transparent;
+  color: white;
+  padding: 10px 20px;
+  margin-left: 10px;
+}
+.network section:last-of-type {
+  margin-bottom: 0;
+}
+
+footer {
+  background-color: white;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 5% 0;
+}
+
+footer div img{
+  width: 30px;
+  margin-right: 10px;
+}
+@media screen and (min-width: 768px) {
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  header nav a {
+    margin: 0 0 0 20px;
+  }
+
+  /* HOME */
+  .presentation {
+    padding: 300px 10%;
+    min-height: inherit;
+  }
+  .presentation h1 {
+    padding-top: 0;
+    font-size: 28px;
+    text-align: center;
+  }
+  .about, .analysis, .join {
+    padding: 10%;
+  }
+
+  .analysis article:first-of-type {
+    padding: 10% 0;
+  }
+
+
+  .analysis article div  {
+    width: 65%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  #root {
+    font-size: 18px;
+  }
+  .burger-btn {
+    display: none;
+  }
+
+  header nav {
+    display: flex;
+
+  }
+  .presentation {
+    padding: 300px 0;
+    min-height: 100vh;
+  }
+
+  .presentation h1 {
+    font-size: 42px;
+    margin-top: 12vh;
+  }
+
+  .presentation a {
+    display: block;
+    margin: 50px auto 0;
+    width: fit-content;
+    background-color: transparent;
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .presentation a:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+  }
+  .about, .analysis, .join{
+    padding: 0;
+  }
+  .about {
+    min-height: 100vh;
+  }
+  .about>div, .join {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .about>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding-top: 25vh;
+  }
+
+  .about>div div {
+    width: 58%;
+  }
+
+  .about .iframe-container {
+    width: 40%;
+    padding-top: 250px;
+  }
+  .analysis {
+    min-height: 100vh;
+  }
+  .analysis h2 {
+    padding-top: 12vh;
+    text-align: center;
+  }
+  .analysis article {
+    max-width: 1280px;
+    margin: 0 10%;
+  }
+  .analysis article:first-of-type {
+    padding: 50px 0;
+  }
+  .analysis article img {
+    width: 22%;
+    margin-right: 25px;
+  }
+
+  .analysis article:last-of-type img {
+    width: 20%;
+  }
+  .analysis article div {
+    margin-right: 20px;
+  }
+
+  .analysis article div a {
+    width: fit-content;
+    padding: 10px 20px;
+  }
+  .analysis article:last-of-type div a {
+    position: relative;
+    right: -74%;
+  }
+  .analysis>p {
+    margin-top: 50px;
+  }
+
+  .join {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 100vh;
+  }
+  .join div {
+    width: 70%;
+  }
+  .join form {
+    width: 100%;
+  }
+
+  .join img {
+    width: 20%;
+  }
+}
+
+@media  screen and (min-width: 1300px) {
+  .analysis article:last-of-type div a {
+    right: -80%;
+  }
+}
+@media screen and (min-width: 1500px) {
+
+  header  {
+    padding: 10px 10%;
+    margin: 0 auto;
+  }
+  .about, .analysis, .join {
+    padding: 75px 0;
+    margin: 0 auto;
+  }
+
+  .about>div div{
+    width: 45%;
+  }
+
+  .about .iframe-container {
+    width: 50%;
+    padding-top: 300px;
+    margin-top: 25px;
+  }
+
+  .analysis article {
+    margin: 0 auto;
+  }
+
+  .analysis article img {
+    width: 15%;
+    margin-right: 25px;
+  }
+  
+  .analysis article:last-of-type img {
+    width: 13%;
+  }
+
+  .analysis article div {
+    width: 80%;
+  }
+
+  .analysis article:last-of-type div a {
+    right: -88%;
+  }
+  .join div {
+    width: 65%;
+  }
+
+  .join img {
+    width: 25%;
+  }
+}
