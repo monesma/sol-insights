@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Line } from "react-chartjs-2";
+import { Line, Pie } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { Connection } from "@solana/web3.js";
 import Loader from "./Loader";
+import ScreenSize from "../helpers/ScreenSize";
 
 Chart.register(...registerables);
 
@@ -16,7 +17,11 @@ const ValidatorAnalysis = () => {
   const [refreshInterval, setRefreshInterval] = useState<number>(5000); // Interval par défaut: 15 secondes
   const [latencyVsVoteVariance, setLatencyVsVoteVariance] = useState<any[]>([]);
   const [tpsVsVotesVariance, setTpsVsVotesVariance] = useState<any[]>([]);
-
+  const [activeValidators, setActiveValidators] = useState<number[]>([]);
+  const [delinquentValidators, setDelinquentValidators] = useState<number[]>([]);
+  const [activeVsDelinquentVariance, setActiveVsDelinquentVariance] = useState<number[]>([]);
+  const [lastUpdateTime, setLastUpdateTime] = useState<string>("");
+  const screenW = ScreenSize().width;
   const connection = new Connection(
     import.meta.env.VITE_CONNEXION
   );
@@ -52,6 +57,21 @@ const ValidatorAnalysis = () => {
     }
   };
 
+
+  const analyzeValidators = async () => {
+    try {
+      const voteAccounts = await connection.getVoteAccounts();
+      
+      const activeCount = voteAccounts.current.length;
+      const delinquentCount = voteAccounts.delinquent.length;
+
+      setActiveValidators(prev => [...prev, activeCount]);
+      setDelinquentValidators(prev => [...prev, delinquentCount]);
+
+    } catch (error) {
+      console.error("Error fetching validator analysis", error);
+    }
+  };
   const getNetworkCongestionStats = async () => {
     try {
       const blockPerfSamples = await connection.getRecentPerformanceSamples(1);
@@ -127,6 +147,11 @@ const ValidatorAnalysis = () => {
       ]);
     }
 
+    if (activeValidators.length > 0 && delinquentValidators.length > 0 && activeValidators.length === delinquentValidators.length) {
+      const variance = calculateVariance(activeValidators, delinquentValidators);
+      setActiveVsDelinquentVariance(prev => [...prev, variance]);
+    }
+
     if (
       tpsHistory.length > 0 &&
       validatorVoteCount.length > 0 &&
@@ -144,7 +169,7 @@ const ValidatorAnalysis = () => {
     const fetchData = async () => {
       await getValidatorVoteStats();
       await getNetworkCongestionStats();
-
+      await  analyzeValidators()
       const currentTime = new Date().toLocaleTimeString("en-US", {
         hour12: false,
         hour: "2-digit",
@@ -158,6 +183,7 @@ const ValidatorAnalysis = () => {
         }
         return prev;
       });
+      setLastUpdateTime(currentTime);
     };
 
     fetchData();
@@ -175,20 +201,23 @@ const ValidatorAnalysis = () => {
     setLatencyVsVoteVariance([]);
     setTpsVsVotesVariance([]);
     setValidatorVoteLatency([]);
+    setActiveValidators([]);
+    setDelinquentValidators([]);
+    setActiveVsDelinquentVariance([]);
   }, [refreshInterval]);
 
   const latencyVsVotesData = {
     labels: timeLabels,
     datasets: [
       {
-        label: "Latence des votes (ms)",
+        label: "Voting latency (ms)",
         data: validatorVoteLatency,
         fill: false,
         borderColor: "rgba(75,192,192,1)",
         tension: 0.1,
       },
       {
-        label: "Votes des validateurs",
+        label: "Validators' votes",
         data: validatorVoteCount,
         fill: false,
         borderColor: "rgba(153,102,255,1)",
@@ -201,18 +230,32 @@ const ValidatorAnalysis = () => {
     labels: timeLabels,
     datasets: [
       {
-        label: "TPS (Transactions par seconde)",
+        label: "TPS (Transactions per second)",
         data: tpsHistory,
         fill: false,
         borderColor: "rgba(153,102,255,1)",
         tension: 0.1,
       },
       {
-        label: "Votes des validateurs",
+        label: "Validators' votes",
         data: validatorVoteCount,
         fill: false,
         borderColor: "rgba(54,162,235,1)",
         tension: 0.1,
+      },
+    ],
+  };
+
+  const validatorStatusPieData = {
+    labels: ["Active Validators", "Delinquent Validators"],
+    datasets: [
+      {
+        data: [
+          activeValidators[activeValidators.length - 1] || 0,
+          delinquentValidators[delinquentValidators.length - 1] || 0,
+        ],
+        backgroundColor: ["rgba(75,192,192,1)", "rgba(255,99,132,1)"],
+        hoverBackgroundColor: ["rgba(75,192,192,0.7)", "rgba(255,99,132,0.7)"],
       },
     ],
   };
@@ -231,6 +274,7 @@ const ValidatorAnalysis = () => {
     ],
   };
 
+  
   const tpsVotesVarianceData = {
     labels: timeLabels,
     datasets: [
@@ -242,6 +286,20 @@ const ValidatorAnalysis = () => {
         borderDash: [10, 5],
         tension: 0.1,
       },
+    ],
+  };
+
+  const validatorVarianceData = {
+    labels: timeLabels,
+    datasets: [
+      {
+        label: "Variance (Active vs Delinquent)",
+        data: activeVsDelinquentVariance,
+        fill: false,
+        borderColor: "rgba(255, 206, 86, 1)",
+        borderDash: [10, 5],
+        tension: 0.1,
+      }
     ],
   };
 
@@ -373,6 +431,46 @@ const ValidatorAnalysis = () => {
           transaction processing or latency problems for validators. A stable
           relationship, even during periods of high activity, would be a good
           indicator of network resilience.
+        </p>
+      </section>
+      <section>
+        <h2>3. Status of Solana Validators</h2>
+        {activeValidators.length > 0 && delinquentValidators.length > 0 ? (
+          <div id="pie">
+            <p>
+              <strong>Last update: {lastUpdateTime}</strong>
+            </p>
+            <div className="camembert">
+              <Pie data={validatorStatusPieData} />
+              {screenW >= 768 &&<div>
+              <p>Here the diagram refreshes automatically at each interval (chosen by you).
+                  This gives a better view of the proportional.</p>
+
+                <p>A delinquent validator on Solana is a validator who no longer actively participates in block validation due to technical or network problems, or prolonged inactivity. This can be caused by loss of connection, poor performance or a lack of regular votes.</p>
+              </div>}
+
+            </div>
+            
+            <h4>Variance between active validators and delinquents</h4>
+            {activeVsDelinquentVariance.length > 0 ? (
+              <Line data={validatorVarianceData} options={options} />
+            ) : (
+              <Loader />
+            )}
+          </div>
+        ) : (
+          <Loader />
+        )}
+        <p>
+        This analysis illustrates the distribution between active and delinquent validators over time. Regular monitoring of this data is essential to assess the health and stability of the network, as a high number of delinquent validators may signal underlying problems in the infrastructure or unfavourable conditions.
+        </p>
+        <h3>Variance interpretation:</h3>
+        <p>
+        A low variance between the number of active and delinquent validators indicates network stability. A high variance could indicate potential problems in the network infrastructure or unfavourable conditions affecting certain validators.
+        </p>
+        <h3>Deductions :</h3>
+        <p>
+          An increasing number of delinquent validators could indicate wider network problems requiring immediate attention. A stable proportion of active validators suggests a healthy, well-maintained network.
         </p>
       </section>
     </div>
